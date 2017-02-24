@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<elements>
+  <elemen name="Physical">
+    <PhysicalTotalMb>3969</PhysicalTotalMb>
+    <PhysicalAvailableMb>994</PhysicalAvailableMb>
+    <PhysicalPercentFree>25.044091710758377425044091710</PhysicalPercentFree>
+    <PhysicalOccupied>74.955908289241622574955908290</PhysicalOccupied>
+  </elemen>
+</elements>
