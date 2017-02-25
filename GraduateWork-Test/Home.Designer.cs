@@ -1,76 +1,65 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Drawing;
 using System.Diagnostics;
+using System.Windows.Forms;
+using System.ComponentModel;
 
 namespace GraduateWork_Test
 {
     partial class Home
     {
-        /// <summary>
-        /// Обязательная переменная конструктора.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
-        /// <summary>
-        /// Освободить все используемые ресурсы.
-        /// </summary>
-        /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
+            if (disposing && (components != null)) components.Dispose();
             base.Dispose(disposing);
         }
 
         #region Код, автоматически созданный конструктором форм Windows
-
-        /// <summary>
-        /// Требуемый метод для поддержки конструктора — не изменяйте 
-        /// содержимое этого метода с помощью редактора кода.
-        /// </summary>
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.statusTextStrip = new System.Windows.Forms.ToolStripStatusLabel();
+            this.peerList = new System.Windows.Forms.ListBox();
+            this.eventLog = new System.Diagnostics.EventLog();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.exitMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.connectMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.statusTextStrip = new System.Windows.Forms.ToolStripStatusLabel();
+            this.peerDataBox = new System.Windows.Forms.RichTextBox();
             this.disconnectMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.zedGraph = new ZedGraph.ZedGraphControl();
             this.timerUpdateData = new System.Windows.Forms.Timer(this.components);
-            this.eventLog = new System.Diagnostics.EventLog();
-            this.peerList = new System.Windows.Forms.ListBox();
-            this.messageMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStrip.SuspendLayout();
-            this.menuStrip.SuspendLayout();
+            this.timerSetData = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.eventLog)).BeginInit();
+            this.menuStrip.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // statusStrip
+            // peerList
             // 
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusTextStrip});
-            this.statusStrip.Location = new System.Drawing.Point(0, 381);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(976, 22);
-            this.statusStrip.TabIndex = 0;
+            this.peerList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.peerList.FormattingEnabled = true;
+            this.peerList.Location = new System.Drawing.Point(0, 27);
+            this.peerList.Name = "peerList";
+            this.peerList.Size = new System.Drawing.Size(313, 351);
+            this.peerList.TabIndex = 2;
+            this.peerList.SelectedIndexChanged += new System.EventHandler(this.peerList_SelectedIndexChanged);
             // 
-            // statusTextStrip
+            // eventLog
             // 
-            this.statusTextStrip.Name = "statusTextStrip";
-            this.statusTextStrip.Size = new System.Drawing.Size(16, 17);
-            this.statusTextStrip.Text = "...";
+            this.eventLog.SynchronizingObject = this;
+            this.eventLog.EntryWritten += new System.Diagnostics.EntryWrittenEventHandler(this.eventLog_EntryWritten);
             // 
             // menuStrip
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileMenu,
             this.refreshMenu,
-            this.connectMenu,
-            this.messageMenu});
+            this.connectMenu});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(976, 24);
@@ -105,6 +94,31 @@ namespace GraduateWork_Test
             this.connectMenu.Text = "&Сonnect";
             this.connectMenu.Click += new System.EventHandler(this.connectMenu_Click);
             // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusTextStrip});
+            this.statusStrip.Location = new System.Drawing.Point(0, 381);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(976, 22);
+            this.statusStrip.TabIndex = 0;
+            // 
+            // statusTextStrip
+            // 
+            this.statusTextStrip.Name = "statusTextStrip";
+            this.statusTextStrip.Size = new System.Drawing.Size(16, 17);
+            this.statusTextStrip.Text = "...";
+            // 
+            // peerDataBox
+            // 
+            this.peerDataBox.BackColor = System.Drawing.SystemColors.Info;
+            this.peerDataBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.peerDataBox.Location = new System.Drawing.Point(312, 27);
+            this.peerDataBox.Name = "peerDataBox";
+            this.peerDataBox.Size = new System.Drawing.Size(664, 351);
+            this.peerDataBox.TabIndex = 4;
+            this.peerDataBox.Text = "";
+            // 
             // disconnectMenu
             // 
             this.disconnectMenu.Name = "disconnectMenu";
@@ -112,37 +126,36 @@ namespace GraduateWork_Test
             this.disconnectMenu.Text = "&Disconnect";
             this.disconnectMenu.Click += new System.EventHandler(this.disconnectMenu_Click);
             // 
+            // zedGraph
+            // 
+            this.zedGraph.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.zedGraph.IsShowPointValues = false;
+            this.zedGraph.Location = new System.Drawing.Point(312, 27);
+            this.zedGraph.Name = "zedGraph";
+            this.zedGraph.PointValueFormat = "G";
+            this.zedGraph.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.zedGraph.Size = new System.Drawing.Size(664, 351);
+            this.zedGraph.TabIndex = 3;
+            // 
             // timerUpdateData
             // 
+            this.timerUpdateData.Enabled = true;
             this.timerUpdateData.Interval = 1000;
             this.timerUpdateData.Tick += new System.EventHandler(this.timerUpdateData_Tick);
             // 
-            // eventLog
+            // timerSetData
             // 
-            this.eventLog.SynchronizingObject = this;
-            this.eventLog.EntryWritten += new System.Diagnostics.EntryWrittenEventHandler(this.eventLog_EntryWritten);
-            // 
-            // peerList
-            // 
-            this.peerList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.peerList.FormattingEnabled = true;
-            this.peerList.Location = new System.Drawing.Point(0, 27);
-            this.peerList.Name = "peerList";
-            this.peerList.Size = new System.Drawing.Size(313, 351);
-            this.peerList.TabIndex = 2;
-            // 
-            // messageMenu
-            // 
-            this.messageMenu.Name = "messageMenu";
-            this.messageMenu.Size = new System.Drawing.Size(65, 20);
-            this.messageMenu.Text = "Message";
-            this.messageMenu.Click += new System.EventHandler(this.messageMenu_Click);
+            this.timerSetData.Enabled = false;
+            this.timerSetData.Interval = 1000;
+            this.timerSetData.Tick += new System.EventHandler(this.peerList_SelectedIndexChanged);
             // 
             // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(976, 403);
+            this.Controls.Add(this.peerDataBox);
+            this.Controls.Add(this.zedGraph);
             this.Controls.Add(this.peerList);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);
@@ -152,31 +165,33 @@ namespace GraduateWork_Test
             this.Name = "Home";
             this.ShowIcon = false;
             this.Text = "GraduateWork";
-            this.Load += new System.EventHandler(this.Home_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Home_KeyDown);
-            this.statusStrip.ResumeLayout(false);
-            this.statusStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.eventLog)).EndInit();
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.eventLog)).EndInit();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
-
         #endregion
 
-        private StatusStrip statusStrip;
-        private MenuStrip menuStrip;
+        private ToolStripStatusLabel statusTextStrip;
+        private ZedGraph.ZedGraphControl zedGraph;
+        private ToolStripMenuItem disconnectMenu;
+        private ToolStripMenuItem connectMenu;
+        private ToolStripMenuItem refreshMenu;
         private ToolStripMenuItem fileMenu;
         private ToolStripMenuItem exitMenu;
+        private RichTextBox peerDataBox;
+        private StatusStrip statusStrip;
         private Timer timerUpdateData;
+        private MenuStrip menuStrip;
         private EventLog eventLog;
-        private ToolStripStatusLabel statusTextStrip;
-        private ToolStripMenuItem connectMenu;
-        private ToolStripMenuItem disconnectMenu;
         private ListBox peerList;
-        private ToolStripMenuItem refreshMenu;
-        private ToolStripMenuItem messageMenu;
+
+        //test
+        private Timer timerSetData;
     }
 }

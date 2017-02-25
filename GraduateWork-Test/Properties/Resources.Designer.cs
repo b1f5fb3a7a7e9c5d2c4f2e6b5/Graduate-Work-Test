@@ -61,6 +61,16 @@ namespace GraduateWork_Test.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Вы уверены, что хотите выйти?
+        ///{0}.
+        /// </summary>
+        internal static string Home_OnFormClosing_ {
+            get {
+                return ResourceManager.GetString("Home_OnFormClosing_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на {0}; {1}; {2}; {3}.
         /// </summary>
         internal static string Home_timerUpdateData_Tick__0____1____2____3_ {

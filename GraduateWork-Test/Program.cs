@@ -1,12 +1,10 @@
-﻿ 
-using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace GraduateWork_Test
 {
     internal static class Program
     {
-        [STAThread]
+        [System.STAThread]
         private static void Main()
         {
             Application.EnableVisualStyles();

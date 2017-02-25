@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Security.Principal;
-using System.ServiceModel;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using GraduateWork_Test.Properties;
 
@@ -16,18 +12,19 @@ namespace GraduateWork_Test
     {
         internal Setting DlgSetting { private set; get; }
         internal PeerToPeer P2P { private set; get; }
-
-        private PerfomanceInfoData _perfomance;
-        internal List<PeerEntry> ListPeerEntry;
+        internal ZedGraphControler AllPeerData { private set; get; }
+        internal PerfomanceInfoData Perfomance { private set; get; }
+        internal List<PeerEntry> ListPeerEntry { private set; get; }
 
         public Home()
         {
             InitializeComponent();
 
             DlgSetting = new Setting();
-            _perfomance = PsApiWrapper.GetPerformanceInfo();
+            Perfomance = PsApiWrapper.GetPerformanceInfo();
             P2P = new PeerToPeer(this);
             ListPeerEntry = new List<PeerEntry>();
+            AllPeerData = new ZedGraphControler();
 
             base.Text = DlgSetting.UserName;
 
@@ -55,7 +52,7 @@ namespace GraduateWork_Test
 
         private void Home_KeyDown(object sender, KeyEventArgs e)
         {
-            if ((e.KeyCode & Keys.Escape) == Keys.Escape) Close(); ;
+            if ((e.KeyCode & Keys.Escape) == Keys.Escape) Close();
         }
 
         public DialogResult ShowMessage(string text, string caption, MessageBoxIcon icon = MessageBoxIcon.Stop)
@@ -65,10 +62,12 @@ namespace GraduateWork_Test
 
         private void timerUpdateData_Tick(object sender, EventArgs e)
         {
-            _perfomance = PsApiWrapper.GetPerformanceInfo();
+            Perfomance = PsApiWrapper.GetPerformanceInfo();
             statusTextStrip.Text = string.Format(Resources.Home_timerUpdateData_Tick__0____1____2____3_,
-                _perfomance.PhysicalTotalMb, _perfomance.PhysicalAvailableMb,
-                _perfomance.PhysicalPercentFree, _perfomance.PhysicalOccupied); //избыточные данные
+                Perfomance.PhysicalTotalMb, Perfomance.PhysicalAvailableMb,
+                Perfomance.PhysicalPercentFree, Perfomance.PhysicalOccupied); //избыточные данные
+
+            P2P.SendMessage();
         }
 
         private void eventLog_EntryWritten(object sender, EntryWrittenEventArgs e)
@@ -92,6 +91,8 @@ namespace GraduateWork_Test
 
         private void disconnectMenu_Click(object sender, EventArgs e)
         {
+            timerSetData.Stop();
+
             P2P.Closing();
 
             menuStrip.Items.Insert(menuStrip.Items.IndexOf(disconnectMenu), connectMenu);
@@ -100,18 +101,14 @@ namespace GraduateWork_Test
             refreshMenu.Enabled = false;
         }
 
-        internal void SetRefreshMenuEnabled(bool enabled)
+        internal void SetRefreshMenuEnabled(bool enabled) //Нужно будет переделать
         {
             refreshMenu.Enabled = enabled;
         }
 
-        private void Home_Load(object sender, EventArgs e)
-        {
-            //connectMenu_Click(sender, e);
-        }
-
         private void refresh_Click(object sender, EventArgs e)
         {
+            timerSetData.Stop();
             P2P.Refresh();
         }
 
@@ -125,8 +122,8 @@ namespace GraduateWork_Test
                 return;
             }
 
-            if (MessageBox.Show(@"Вы уверены, что хотите выйти?", @"Внимание",
-                    MessageBoxButtons.YesNo) != DialogResult.Yes)
+            if (MessageBox.Show(string.Format(Resources.Home_OnFormClosing_, DlgSetting.UserName), 
+                @"Внимание", MessageBoxButtons.YesNo) != DialogResult.Yes)
             {
                 e.Cancel = true;
                 return;
@@ -135,21 +132,22 @@ namespace GraduateWork_Test
             P2P.Closing();
         }
 
-        private void messageMenu_Click(object sender, EventArgs e)
+        private void peerList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Получение пира и прокси, для отправки сообщения
-            //PeerEntry peerEntry = ((Button)e.OriginalSource).DataContext as PeerEntry;
-            var peerEntry = ListPeerEntry[0];
+            timerSetData.Start();
 
-            if (peerEntry?.ServiceProxy == null) return;
+            var peerName = peerList.GetItemText(peerList.SelectedItem);
+            if (peerName == "Пиры не найдены!") return;
 
-            try
+            var peerData = AllPeerData.GetPeerData(peerName);
+            if (peerData == "_Please_Update_Peer_")
             {
-                peerEntry.ServiceProxy.SendMessage("Привет друг!", peerList.GetItemText(peerList.Items[0]));
+                P2P.Refresh();
+                //return;
             }
-            catch (CommunicationException)
+            else
             {
-                //...
+                peerDataBox.Text = peerData;
             }
         }
     }

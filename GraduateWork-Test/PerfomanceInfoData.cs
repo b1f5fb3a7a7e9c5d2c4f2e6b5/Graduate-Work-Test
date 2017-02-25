@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Xml.Linq;
 
 namespace GraduateWork_Test
 {
+    [Serializable]
     public class PerfomanceInfoData
     {
         // data in pages
@@ -27,18 +27,6 @@ namespace GraduateWork_Test
         public int HandlesCount;            //
         public int ProcessCount;            //
         public int ThreadCount;             //
-
-        public void PerfomanceInfoDataXml()
-        {
-            var xdoc = new XDocument(new XElement("elements",
-                new XElement("elemen",
-                    new XAttribute("name", "Physical"),
-                    new XElement("PhysicalTotalMb", PhysicalTotalMb),
-                    new XElement("PhysicalAvailableMb", PhysicalAvailableMb),
-                    new XElement("PhysicalPercentFree", PhysicalPercentFree),
-                    new XElement("PhysicalOccupied", PhysicalOccupied))));
-            xdoc.Save(@"..\..\PerfomanceInfoData.xml");
-        }
     }
 
     public static class PsApiWrapper
@@ -50,7 +38,7 @@ namespace GraduateWork_Test
         [StructLayout(LayoutKind.Sequential)]
         private struct PsApiPerformanceInformation
         {
-            public int Size;
+            private readonly int Size;
             public IntPtr CommitTotal;
             public IntPtr CommitLimit;
             public IntPtr CommitPeak;

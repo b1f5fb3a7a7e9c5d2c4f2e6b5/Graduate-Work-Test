@@ -1,18 +1,18 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
-using System.Net.PeerToPeer;
-using System.Net.Sockets;
-using System.Security.Principal;
+using System.Linq;
 using System.Threading;
+using System.Net.Sockets;
 using System.Windows.Forms;
+using System.Net.PeerToPeer;
+using System.Security.Principal;
 
 namespace GraduateWork_Test
 {
     public partial class Setting : Form
     {
-        public Guid Id { private set; get; }
-        public WindowsIdentity Identity { private set; get; }
+        internal Guid Id { private set; get; }
+        internal WindowsIdentity Identity { private set; get; }
 
         public Setting()
         {
@@ -39,6 +39,7 @@ namespace GraduateWork_Test
         public string IpAddress => ipAddress.Text;
         public int Port => int.Parse(port.Text);
         public string CloudName => сloudList.GetItemText(сloudList.SelectedItem);
-        public string UserName => $"{Identity.Name.Replace('\\', '/')}/{Identity.Token}/{Id}";
+        public string UserName => $"{Id}";
+        //public string UserName => $"{Identity.Name.Replace('\\', '/')}/{Identity.Token}/{Id}";
     }
 }

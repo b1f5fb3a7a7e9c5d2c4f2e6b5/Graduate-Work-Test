@@ -1,61 +1,22 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.PeerToPeer;
 using System.Net.Sockets;
 using System.ServiceModel;
 using System.Windows.Forms;
+using System.Net.PeerToPeer;
+using System.Text;
+using System.Xml.Serialization;
 
 namespace GraduateWork_Test
 {
-    public class PeerEntry
-    {
-        public PeerName PeerName { get; set; }
-        public IP2PService ServiceProxy { get; set; }
-        public string DisplayString { get; set; }
-        public bool ButtonsEnabled { get; set; }
-    }
-
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class P2PService : IP2PService
-    {
-        private readonly Home _hostReference;
-        private readonly string _username;
-
-        public P2PService(Home hostReference, string username)
-        {
-            _hostReference = hostReference;
-            _username = username;
-        }
-
-        public string GetName()
-        {
-            return _username;
-        }
-
-        public void SendMessage(string message, string from)
-        {
-            _hostReference.ShowMessage(message, from, MessageBoxIcon.Information);
-        }
-    }
-
-    [ServiceContract]
-    public interface IP2PService
-    {
-        [OperationContract]
-        string GetName();
-
-        [OperationContract(IsOneWay = true)]
-        void SendMessage(string message, string from);
-    }
-
     public class PeerToPeer
     {
         private Home _home;
-        private P2PService localService;
-        private string serviceUrl;
         private ServiceHost host;
+        private string serviceUrl;
         private PeerName peerName;
+        private P2PService localService;
         private PeerNameRegistration peerNameRegistration;
 
         public PeerToPeer(Home home)
@@ -67,7 +28,6 @@ namespace GraduateWork_Test
         {
             //  Получение URL-адреса службы с использованием адреса IPv6 
             serviceUrl = $"net.tcp://[{_home.DlgSetting.IpAddress}]:{_home.DlgSetting.Port}/P2PService";
-
 
             // Выполнение проверки, не является ли адрес null
             if (serviceUrl == null)
@@ -99,7 +59,7 @@ namespace GraduateWork_Test
 
             // Подготовка процесса регистрации имени равноправного участника в локальном облаке
             peerNameRegistration = new PeerNameRegistration(peerName, _home.DlgSetting.Port, 
-                //Cloud.GetCloudByName(_home.DlgSetting.CloudName) ?? 
+                Cloud.GetCloudByName(_home.DlgSetting.CloudName) ?? 
                 Cloud.Available);
 
             // Запуск процесса регистрации
@@ -123,6 +83,33 @@ namespace GraduateWork_Test
 
         }
 
+        internal void SendMessage()
+        {
+            if (!_home.ListPeerEntry.Any()) return;
+
+            foreach (var peerEntry in _home.ListPeerEntry)
+            {
+                if (peerEntry?.ServiceProxy == null) continue;
+
+                // сериализуем
+                using (var fs = new FileStream($"{_home.DlgSetting.UserName}.xml", FileMode.OpenOrCreate))
+                {
+                    new XmlSerializer(typeof(PerfomanceInfoData)).Serialize(fs, _home.Perfomance);
+                }
+
+                var bytes = Encoding.UTF8.GetBytes(File.ReadAllText($"{_home.DlgSetting.UserName}.xml"));
+
+                try
+                {
+                    peerEntry.ServiceProxy.SendMessage(_home.DlgSetting.UserName, bytes);
+                }
+                catch (CommunicationException)
+                {
+                    //...
+                }
+            } 
+        }
+
         internal void Refresh()
         {
             // Создание распознавателя и добавление обработчиков событий
@@ -134,7 +121,7 @@ namespace GraduateWork_Test
             _home.ListPeerEntryClear();
             _home.SetRefreshMenuEnabled(false);
 
-            // Преобразование незащищенных имен пиров асинхронным образом
+            // Преобразование защищенных имен пиров асинхронным образом
             resolver.ResolveAsync(new PeerName("P2P Sample", PeerNameType.Secured), _home.DlgSetting.Id);
         }
 
