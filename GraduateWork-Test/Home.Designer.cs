@@ -31,7 +31,6 @@ namespace GraduateWork_Test
             this.statusTextStrip = new System.Windows.Forms.ToolStripStatusLabel();
             this.peerDataBox = new System.Windows.Forms.RichTextBox();
             this.disconnectMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.zedGraph = new ZedGraph.ZedGraphControl();
             this.timerUpdateData = new System.Windows.Forms.Timer(this.components);
             this.timerSetData = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.eventLog)).BeginInit();
@@ -126,17 +125,6 @@ namespace GraduateWork_Test
             this.disconnectMenu.Text = "&Disconnect";
             this.disconnectMenu.Click += new System.EventHandler(this.disconnectMenu_Click);
             // 
-            // zedGraph
-            // 
-            this.zedGraph.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.zedGraph.IsShowPointValues = false;
-            this.zedGraph.Location = new System.Drawing.Point(312, 27);
-            this.zedGraph.Name = "zedGraph";
-            this.zedGraph.PointValueFormat = "G";
-            this.zedGraph.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.zedGraph.Size = new System.Drawing.Size(664, 351);
-            this.zedGraph.TabIndex = 3;
-            // 
             // timerUpdateData
             // 
             this.timerUpdateData.Enabled = true;
@@ -155,7 +143,6 @@ namespace GraduateWork_Test
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(976, 403);
             this.Controls.Add(this.peerDataBox);
-            this.Controls.Add(this.zedGraph);
             this.Controls.Add(this.peerList);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);
@@ -178,7 +165,6 @@ namespace GraduateWork_Test
         #endregion
 
         private ToolStripStatusLabel statusTextStrip;
-        private ZedGraph.ZedGraphControl zedGraph;
         private ToolStripMenuItem disconnectMenu;
         private ToolStripMenuItem connectMenu;
         private ToolStripMenuItem refreshMenu;

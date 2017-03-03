@@ -58,9 +58,7 @@ namespace GraduateWork_Test
             peerName = new PeerName("P2P Sample", PeerNameType.Secured);
 
             // Подготовка процесса регистрации имени равноправного участника в локальном облаке
-            peerNameRegistration = new PeerNameRegistration(peerName, _home.DlgSetting.Port, 
-                Cloud.GetCloudByName(_home.DlgSetting.CloudName) ?? 
-                Cloud.Available);
+            peerNameRegistration = new PeerNameRegistration(peerName, _home.DlgSetting.Port, Cloud.Available);
 
             // Запуск процесса регистрации
             peerNameRegistration.Start();
