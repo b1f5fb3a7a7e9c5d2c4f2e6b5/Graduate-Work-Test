@@ -78,7 +78,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="P2PService.cs" />
+    <Compile Include="MultiCast.cs" />
     <Compile Include="Setting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,11 +91,9 @@
     <Compile Include="Home.Designer.cs">
       <DependentUpon>Home.cs</DependentUpon>
     </Compile>
-    <Compile Include="PeerToPeer.cs" />
     <Compile Include="PerfomanceInfoData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ZedGraphControler.cs" />
     <EmbeddedResource Include="Setting.resx">
       <DependentUpon>Setting.cs</DependentUpon>
     </EmbeddedResource>

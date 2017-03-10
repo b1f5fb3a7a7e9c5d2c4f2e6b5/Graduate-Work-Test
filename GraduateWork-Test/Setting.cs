@@ -39,7 +39,7 @@ namespace GraduateWork_Test
         public string IpAddress => ipAddress.Text;
         public int Port => int.Parse(port.Text);
         public string CloudName => сloudList.GetItemText(сloudList.SelectedItem);
-        public string UserName => $"{Id}";
-        //public string UserName => $"{Identity.Name.Replace('\\', '/')}/{Identity.Token}/{Id}";
+        //public string UserName => $"{Id}";
+        public string UserName => $"{Identity.Name.Replace('\\', '/')}/{Identity.Token}/{Id}";
     }
 }

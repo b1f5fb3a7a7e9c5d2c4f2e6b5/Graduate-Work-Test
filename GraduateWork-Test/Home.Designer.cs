@@ -25,14 +25,11 @@ namespace GraduateWork_Test
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.exitMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.connectMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusTextStrip = new System.Windows.Forms.ToolStripStatusLabel();
-            this.peerDataBox = new System.Windows.Forms.RichTextBox();
+            this.dataBox = new System.Windows.Forms.RichTextBox();
             this.disconnectMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.timerUpdateData = new System.Windows.Forms.Timer(this.components);
-            this.timerSetData = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.eventLog)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -46,19 +43,16 @@ namespace GraduateWork_Test
             this.peerList.Name = "peerList";
             this.peerList.Size = new System.Drawing.Size(313, 351);
             this.peerList.TabIndex = 2;
-            this.peerList.SelectedIndexChanged += new System.EventHandler(this.peerList_SelectedIndexChanged);
             // 
             // eventLog
             // 
             this.eventLog.SynchronizingObject = this;
-            this.eventLog.EntryWritten += new System.Diagnostics.EntryWrittenEventHandler(this.eventLog_EntryWritten);
+            this.eventLog.EntryWritten += new System.Diagnostics.EntryWrittenEventHandler(this.EventLog_EntryWritten);
             // 
             // menuStrip
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileMenu,
-            this.refreshMenu,
-            this.connectMenu});
+            this.fileMenu});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(976, 24);
@@ -77,21 +71,7 @@ namespace GraduateWork_Test
             this.exitMenu.Name = "exitMenu";
             this.exitMenu.Size = new System.Drawing.Size(92, 22);
             this.exitMenu.Text = "&Exit";
-            this.exitMenu.Click += new System.EventHandler(this.exitMenu_Click);
-            // 
-            // refreshMenu
-            // 
-            this.refreshMenu.Name = "refreshMenu";
-            this.refreshMenu.Size = new System.Drawing.Size(58, 20);
-            this.refreshMenu.Text = "&Refresh";
-            this.refreshMenu.Click += new System.EventHandler(this.refresh_Click);
-            // 
-            // connectMenu
-            // 
-            this.connectMenu.Name = "connectMenu";
-            this.connectMenu.Size = new System.Drawing.Size(64, 20);
-            this.connectMenu.Text = "&Сonnect";
-            this.connectMenu.Click += new System.EventHandler(this.connectMenu_Click);
+            this.exitMenu.Click += new System.EventHandler(this.ExitMenu_Click);
             // 
             // statusStrip
             // 
@@ -108,41 +88,34 @@ namespace GraduateWork_Test
             this.statusTextStrip.Size = new System.Drawing.Size(16, 17);
             this.statusTextStrip.Text = "...";
             // 
-            // peerDataBox
+            // dataBox
             // 
-            this.peerDataBox.BackColor = System.Drawing.SystemColors.Info;
-            this.peerDataBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.peerDataBox.Location = new System.Drawing.Point(312, 27);
-            this.peerDataBox.Name = "peerDataBox";
-            this.peerDataBox.Size = new System.Drawing.Size(664, 351);
-            this.peerDataBox.TabIndex = 4;
-            this.peerDataBox.Text = "";
+            this.dataBox.BackColor = System.Drawing.SystemColors.Info;
+            this.dataBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dataBox.Location = new System.Drawing.Point(312, 27);
+            this.dataBox.Name = "dataBox";
+            this.dataBox.Size = new System.Drawing.Size(664, 351);
+            this.dataBox.TabIndex = 4;
+            this.dataBox.Text = "";
             // 
             // disconnectMenu
             // 
             this.disconnectMenu.Name = "disconnectMenu";
             this.disconnectMenu.Size = new System.Drawing.Size(70, 20);
             this.disconnectMenu.Text = "&Disconnect";
-            this.disconnectMenu.Click += new System.EventHandler(this.disconnectMenu_Click);
             // 
             // timerUpdateData
             // 
             this.timerUpdateData.Enabled = true;
-            this.timerUpdateData.Interval = 1000;
-            this.timerUpdateData.Tick += new System.EventHandler(this.timerUpdateData_Tick);
-            // 
-            // timerSetData
-            // 
-            this.timerSetData.Enabled = false;
-            this.timerSetData.Interval = 1000;
-            this.timerSetData.Tick += new System.EventHandler(this.peerList_SelectedIndexChanged);
+            this.timerUpdateData.Interval = 2000;
+            this.timerUpdateData.Tick += new System.EventHandler(this.TimerUpdateData_Tick);
             // 
             // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(976, 403);
-            this.Controls.Add(this.peerDataBox);
+            this.Controls.Add(this.dataBox);
             this.Controls.Add(this.peerList);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip);
@@ -166,18 +139,13 @@ namespace GraduateWork_Test
 
         private ToolStripStatusLabel statusTextStrip;
         private ToolStripMenuItem disconnectMenu;
-        private ToolStripMenuItem connectMenu;
-        private ToolStripMenuItem refreshMenu;
         private ToolStripMenuItem fileMenu;
         private ToolStripMenuItem exitMenu;
-        private RichTextBox peerDataBox;
+        private RichTextBox dataBox;
         private StatusStrip statusStrip;
         private Timer timerUpdateData;
         private MenuStrip menuStrip;
         private EventLog eventLog;
         private ListBox peerList;
-
-        //test
-        private Timer timerSetData;
     }
 }
